@@ -11,9 +11,10 @@ namespace GoWatch.Services.Abstractions
     {
         Task<List<MovieDTO>> GetMovieAsync();
         Task<MovieDTO> GetMovieByIdAsync(int id);
+        Task<MovieCreateEditDTO> GetMovieByIdEditAsync(int id);
         Task<List<MovieDTO>> GetMovieByTitleAsync(string title);
-        Task AddMovieAsync(MovieDTO model);
+        Task AddMovieAsync(MovieCreateEditDTO model);
         Task DeleteMovieByIdAsync(int id);
-        Task UpdateMovieAsync(MovieDTO model);
+        Task UpdateMovieAsync(MovieCreateEditDTO model);
     }
 }

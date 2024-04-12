@@ -8,6 +8,7 @@ namespace GoWatch.Data.Entities
         {
             Categories = new HashSet<Category>();
         }
+        public virtual AppUser? User { get; set; }
         public string Name { get; set; }
         public string Genre { get; set; }
         public string Description { get; set; }
@@ -16,6 +17,8 @@ namespace GoWatch.Data.Entities
         public string Director { get; set; }
         public virtual ICollection<Category>? Categories { get; set; }
         public string MovieUrl { get; set; }
+        public string UserId { get; set; }
+
 
     }
 }

@@ -10,16 +10,25 @@ using GoWatch.Data.Entities;
 using GoWatch.Services.Abstractions;
 using GoWatch.Services;
 using GoWatch.Services.DTOs;
+using GoWatch.Web.Models;
+using GoWatch.Web.Utils;
+using Microsoft.AspNetCore.Identity;
 
 namespace GoWatch.Web.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly IMovieService _movieService;
+        private readonly ICategoryService _categoryService;
+        private readonly IWebHostEnvironment _environment;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public MoviesController(IMovieService movieService)
+        public MoviesController(IMovieService movieService, ICategoryService categoryService, IWebHostEnvironment environment, UserManager<IdentityUser> userManager)
         {
             _movieService = movieService;
+            _categoryService = categoryService;
+            _environment = environment;
+            _userManager = userManager;
         }
 
         // GET: Movies
@@ -41,13 +50,16 @@ namespace GoWatch.Web.Controllers
             {
                 return NotFound();
             }
-
             return View(movie);
         }
 
         // GET: Movies/Create
         public async Task<IActionResult> Create()
         {
+            var user = await _userManager.GetUserAsync(User);
+            var model = new MovieCreateEditViewModel();
+            model.UserId = user.Id;
+            ViewBag.Categories = await _categoryService.GetCategoriesAsync();
             return View();
         }
 
@@ -56,10 +68,16 @@ namespace GoWatch.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MovieDTO movie)
+        public async Task<IActionResult> Create(MovieCreateEditViewModel movie)
         {
             if (ModelState.IsValid)
             {
+                if (movie.Picture != null && movie.Picture.Length > 0)
+                {
+                    var newFileName = await FileUpload.UploadAsync(movie.Picture, _environment.WebRootPath);
+                    movie.PictureUrl = newFileName;
+                }
+
                 await _movieService.AddMovieAsync(movie);
                 return RedirectToAction(nameof(Index));
             }
@@ -74,12 +92,21 @@ namespace GoWatch.Web.Controllers
                 return NotFound();
             }
 
-            var movie = await _movieService.GetMovieByIdAsync(id.Value);
+            var movie = await _movieService
+                .GetMovieByIdEditAsync(id.Value);
             if (movie == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            ViewBag.Categories = await _categoryService.GetCategoriesAsync();
+            return View(new MovieCreateEditViewModel()
+            {
+                Id = movie.Id,
+                Name = movie.Name,
+                Description = movie.Description,
+                PictureUrl = movie.PictureUrl,
+                CategoriesIds = movie.CategoriesIds
+            });
         }
 
         // POST: Movies/Edit/5
@@ -87,7 +114,8 @@ namespace GoWatch.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MovieDTO movie)
+        public async Task<IActionResult> Edit(int id, MovieCreateEditViewModel movie
+            )
         {
             if (id != movie.Id)
             {
@@ -96,13 +124,19 @@ namespace GoWatch.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                if (movie.Picture != null && movie.Picture.Length > 0)
+                {
+                    var newFileName = await FileUpload.UploadAsync(movie.Picture, _environment.WebRootPath);
+                    movie.PictureUrl = newFileName;
+                }
+
                 try
                 {
                     await _movieService.UpdateMovieAsync(movie);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await MovieExists(movie.Id))
+                    if (!await RestaurantExists(movie.Id))
                     {
                         return NotFound();
                     }
@@ -124,13 +158,13 @@ namespace GoWatch.Web.Controllers
                 return NotFound();
             }
 
-            var movie = await _movieService.GetMovieByIdAsync(id.Value);
-            if (movie == null)
+            var restaurant = await _movieService.GetMovieByIdAsync(id.Value);
+            if (restaurant == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(restaurant);
         }
 
         // POST: Movies/Delete/5
@@ -138,19 +172,14 @@ namespace GoWatch.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _movieService.GetMovieByIdAsync(id);
-            if (movie != null)
-            {
-                await _movieService.DeleteMovieByIdAsync(id);
-            }
-
+            await _movieService.DeleteMovieByIdAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<bool> MovieExists(int id)
+        private async Task<bool> RestaurantExists(int id)
         {
-            var movie = await _movieService.GetMovieByIdAsync(id);
-            return movie != null;
+            var restaurant = await _movieService.GetMovieByIdAsync(id);
+            return restaurant != null;
         }
     }
 }

@@ -22,40 +22,57 @@ namespace GoWatch.Services
             _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
-        public async Task AddMovieAsync(MovieDTO model)
+        public async Task AddMovieAsync(MovieCreateEditDTO model)
         {
-            var movie = _mapper.Map<Movie>(model);
-            await _movieRepository.AddAsync(movie);
+            var Movie = _mapper.Map<Movie>(model);
+
+            var categories = model.CategoriesIds
+                .Select(item => _categoryRepository.GetByIdAsync(item).Result)
+                .ToList();
+            Movie.Categories = categories;
+            await _movieRepository.AddAsync(Movie);
         }
 
         public async Task DeleteMovieByIdAsync(int id)
         {
             await _movieRepository.DeleteByIdAsync(id);
-
-        }
-
-        public async Task<List<MovieDTO>> GetMovieAsync()
-        {
-            var movies = (await _movieRepository.GetAllAsync()).ToList();
-            return _mapper.Map<List<MovieDTO>>(movies);
         }
 
         public async Task<MovieDTO> GetMovieByIdAsync(int id)
         {
-            var movie = await _movieRepository.GetByIdAsync(id);
-            return _mapper.Map<MovieDTO>(movie);
+            var Movie = await _movieRepository
+                .GetByIdAsync(id);
+
+            return _mapper.Map<MovieDTO>(Movie);
         }
 
-        public async Task<List<MovieDTO>> GetMovieByTitleAsync(string title)
+        public async Task<MovieCreateEditDTO> GetMovieByIdEditAsync(int id)
         {
-            var movies = (await _movieRepository.GetAsync(item => item.Name == title)).ToList();
-            return _mapper.Map<List<MovieDTO>>(movies);
+            var Movie = await _movieRepository
+                .GetByIdAsync(id);
+            return _mapper.Map<MovieCreateEditDTO>(Movie);
+        }
+        public async Task<List<MovieDTO>> GetMovieByTitleAsync(string name)
+        {
+            var Movies = await _movieRepository.GetAsync(item => item.Name == name);
+            return _mapper.Map<List<MovieDTO>>(Movies);
         }
 
-        public async Task UpdateMovieAsync(MovieDTO model)
+        public async Task<List<MovieDTO>> GetMovieAsync()
         {
-            var movie = _mapper.Map<Movie>(model);
-            await _movieRepository.UpdateAsync(movie);
+            var Movies = await _movieRepository.GetAllAsync();
+            return _mapper.Map<List<MovieDTO>>(Movies);
+        }
+
+        public async Task UpdateMovieAsync(MovieCreateEditDTO model)
+        {
+            var Movie = _mapper.Map<Movie>(model);
+
+            var categories = model.CategoriesIds
+                .Select(item => _categoryRepository.GetByIdAsync(item).Result)
+                .ToList();
+
+            await _movieRepository.UpdateMovie(Movie, categories);
         }
     }
 }

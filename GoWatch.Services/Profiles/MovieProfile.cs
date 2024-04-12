@@ -15,6 +15,7 @@ namespace GoWatch.Services.Profiles
         public MovieProfile()
         {
             CreateMap<Movie, MovieDTO>().ReverseMap();
+            CreateMap<Movie, MovieCreateEditDTO>().ReverseMap();
         }
     }
 }

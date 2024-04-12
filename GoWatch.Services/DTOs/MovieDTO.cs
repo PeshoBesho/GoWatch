@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoWatch.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,8 @@ namespace GoWatch.Services.DTOs
         public int YearOfCreation { get; set; }
         public string Genre { get; set; }
         public string Director { get; set; }
-        public List<CategoryDTO>? Categories { get; set; }
+        public List<CategoryDTO> Categories { get; set; }
         public string MovieUrl { get; set; }
-
+        public AppUser User { get; set; }
     }
 }
