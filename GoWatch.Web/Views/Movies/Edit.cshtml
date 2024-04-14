@@ -3,44 +3,32 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1 style="color: floralwhite">Edit</h1>
 
-<h4>Movie</h4>
+<h4 style="color: floralwhite">Movie</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label" style="color: floralwhite"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Genre" class="control-label"></label>
-                <input asp-for="Genre" class="form-control" />
-                <span asp-validation-for="Genre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label" style="color: floralwhite"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
-                <input asp-for="PictureUrl" type="hidden" value="-" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Picture" class="control-label"></label>
-                <input asp-for="Picture" type="file" class="form-control-file" />
-                <span asp-validation-for="Picture" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="YearOfCreation" class="control-label"></label>
+                <label asp-for="YearOfCreation" class="control-label" style="color: floralwhite"></label>
                 <input asp-for="YearOfCreation" class="form-control" />
                 <span asp-validation-for="YearOfCreation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Director" class="control-label"></label>
+                <label asp-for="Director" class="control-label" style="color: floralwhite"></label>
                 <input asp-for="Director" class="form-control" />
                 <span asp-validation-for="Director" class="text-danger"></span>
             </div>

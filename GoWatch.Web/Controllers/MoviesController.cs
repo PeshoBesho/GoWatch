@@ -21,9 +21,9 @@ namespace GoWatch.Web.Controllers
         private readonly IMovieService _movieService;
         private readonly ICategoryService _categoryService;
         private readonly IWebHostEnvironment _environment;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public MoviesController(IMovieService movieService, ICategoryService categoryService, IWebHostEnvironment environment, UserManager<IdentityUser> userManager)
+        public MoviesController(IMovieService movieService, ICategoryService categoryService, IWebHostEnvironment environment, UserManager<AppUser> userManager)
         {
             _movieService = movieService;
             _categoryService = categoryService;
@@ -60,7 +60,7 @@ namespace GoWatch.Web.Controllers
             var model = new MovieCreateEditViewModel();
             model.UserId = user.Id;
             ViewBag.Categories = await _categoryService.GetCategoriesAsync();
-            return View();
+            return View(model);
         }
 
         // POST: Movies/Create
@@ -81,6 +81,10 @@ namespace GoWatch.Web.Controllers
                 await _movieService.AddMovieAsync(movie);
                 return RedirectToAction(nameof(Index));
             }
+            var user = await _userManager.GetUserAsync(User);
+            var model = new MovieCreateEditViewModel();
+            model.UserId = user.Id;
+            ViewBag.Categories = await _categoryService.GetCategoriesAsync();
             return View(movie);
         }
 
@@ -147,6 +151,8 @@ namespace GoWatch.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Categories = await _categoryService.GetCategoriesAsync();
             return View(movie);
         }
 
@@ -158,13 +164,13 @@ namespace GoWatch.Web.Controllers
                 return NotFound();
             }
 
-            var restaurant = await _movieService.GetMovieByIdAsync(id.Value);
-            if (restaurant == null)
+            var movie = await _movieService.GetMovieByIdAsync(id.Value);
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(restaurant);
+            return View(movie);
         }
 
         // POST: Movies/Delete/5

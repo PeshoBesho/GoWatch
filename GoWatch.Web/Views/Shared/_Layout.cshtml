@@ -7,10 +7,52 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GoWatch.Web.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            background: url('https://img.freepik.com/free-vector/realistic-horizontal-cinema-movie-time-poster-with-3d-glasses-snacks-tickets-clapper-reel-blue-background-with-bokeh-vector-illustration_1284-77013.jpg');
+            background-size: cover;
+            background-position: center center;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: midnightblue;
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        nav a:hover {
+            color: #007bff;
+        }
+
+        .container {
+            background-color: midnightblue;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            width: 85%;
+        }
+
+        footer {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white bg-opacity-50 border-bottom  mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GoWatch.Web</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -37,11 +79,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - GoWatch.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

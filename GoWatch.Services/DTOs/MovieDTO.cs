@@ -13,10 +13,9 @@ namespace GoWatch.Services.DTOs
         public string Description { get; set; }
         public string PictureUrl { get; set; }
         public int YearOfCreation { get; set; }
-        public string Genre { get; set; }
         public string Director { get; set; }
         public List<CategoryDTO> Categories { get; set; }
         public string MovieUrl { get; set; }
-        public AppUser User { get; set; }
+        public virtual AppUser? User { get; set; }
     }
 }

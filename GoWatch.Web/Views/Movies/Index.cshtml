@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 style="color: antiquewhite">Movies</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,7 +16,7 @@
             <div>
                 <img class="img-thumbnail" src="~/uploads/@item.PictureUrl" alt="@item.Name">
             </div>
-            <a class="nav-link" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+            <a class="nav-link" asp-action="Details" asp-route-id="@item.Id" style="color: midnightblue">@item.Name</a>
 
             <div class="d-flex justify-content-around my-3">
                 <a class="btn-warning btn" asp-action="Edit" asp-route-id="@item.Id">Edit</a>

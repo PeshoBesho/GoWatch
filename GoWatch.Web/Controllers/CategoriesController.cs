@@ -45,7 +45,7 @@ namespace GoWatch.Web.Controllers
 
             return View(category);
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         // GET: Categories/Create
         public IActionResult Create()
         {

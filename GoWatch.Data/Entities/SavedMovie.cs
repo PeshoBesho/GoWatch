@@ -9,7 +9,9 @@ namespace GoWatch.Data.Entities
 {
     public class SavedMovie : BaseEntity
     {
-        public string User { get; set; }
+        public string UserId { get; set; }
+        public virtual AppUser? User { get; set; }
         public int MovieId { get; set; }
+        public virtual Movie? Movie { get; set; }
     }
 }

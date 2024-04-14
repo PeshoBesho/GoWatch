@@ -17,6 +17,15 @@ namespace GoWatch.Data.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<SavedMovie> SavedMovies { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Movie>()
+        .HasMany(m => m.Reviews) // Movie has many Reviews
+        .WithOne(r => r.Movie)   // Each Review belongs to one Movie
+        .HasForeignKey(r => r.MovieId) // Foreign key in Review table
+        .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 
     //Creates an object to scaffold successfully
@@ -34,5 +43,9 @@ namespace GoWatch.Data.Data
             builder.UseSqlServer(connectionString);
             return new ApplicationDbContext(builder.Options);
         }
+
     }
+
+
+    
 }
